@@ -1,7 +1,6 @@
-import Layout from 'shared/Layout';
-import Home from 'pages/Home';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Search from 'components/Search';
+import Layout from "shared/Layout";
+import Home from "pages/Home";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 export default function Router() {
   return (
@@ -11,7 +10,6 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Route>
-        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );
