@@ -52,18 +52,20 @@ function Search() {
     });
 
     // 새로운 URL 경로를 검색어와 함께 구성합니다.
-    const newPath = keyword ? `/mapList/${encodeURIComponent(selectParam)}/${encodeURIComponent(keyword)}` : '/';
-    const noSelect = `/`;
-    const nokeyword = selectParam ? `/mapList/${encodeURIComponent(selectParam)}` : `/`;
+    // const newPath = keyword ? `/mapList/${encodeURIComponent(selectParam)}/${encodeURIComponent(keyword)}` : '/';
+    // const noSelect = `/`;
+    // const nokeyword = selectParam ? `/mapList/${encodeURIComponent(selectParam)}` : `/`;
+    const selectedKey = selectParam + keyword;
 
     if (keyword !== '' && selectParam !== '') {
-      navigate(newPath);
+      navigate(`/mapList/${selectParam}/${keyword}`);
     } else if (keyword === '' && selectParam !== '') {
-      navigate(nokeyword);
-    } else if (keyword !== '' && selectParam === '') {
-      alert('산책로 검색을 위해 지역을 선택해주세요');
-      // navigate(noSelect);
+      navigate(`/mapList/${selectedKey}`);
+    } else if (selectParam === '') {
+      return alert('산책로 검색을 위해 지역을 선택해주세요');
     }
+
+    // 수정
 
     // 히스토리 객체를 사용하여 새로운 위치로 이동합니다.
     // navigate(newPath);
@@ -72,22 +74,22 @@ function Search() {
     // getList(selectParam, keyword);
     // }, []);
 
-    const getList = async (key, word) => {
-      const result = key + word;
-      console.log(result);
-      console.log(setIsLoading);
-      try {
-        setIsLoading(true);
-        const response = await axios.get(`http://localhost:5001/mapList/${result}`);
-        console.log('response', response);
-        setPlaces(response.data.result.list);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-      }
-    };
-    getList(selectParam, keyword);
+    // const getList = async (key, word) => {
+    //   const result = key + word;
+    //   console.log(result);
+    //   console.log(setIsLoading);
+    //   try {
+    //     setIsLoading(true);
+    //     const response = await axios.get(`http://localhost:5001/mapList/${result}`);
+    //     console.log('response', response);
+    //     setPlaces(response.data.result.list);
+    //     setIsLoading(false);
+    //   } catch (err) {
+    //     console.log(err);
+    //     setIsLoading(false);
+    //   }
+    // };
+    // getList(selectParam, keyword);
 
     console.log({ keyword, selectParam });
   };

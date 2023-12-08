@@ -16,8 +16,8 @@ export default function Router() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/mapList/:selectParam/:keyword" element={<SearchResultPage />} />
-            {/* <Route path="/search/:keyword" element={<Navigate replace to="/" />} /> */}
             <Route path="/mapList/:selectParam" element={<SearchResultPage />} />
+            {/* <Route path="/search/:keyword" element={<Navigate replace to="/" />} /> */}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Route>
         </Routes>

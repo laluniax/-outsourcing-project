@@ -3,9 +3,15 @@ import { useParams } from 'react-router-dom';
 import Search from '../Search/Search';
 import * as St from '../Search/SearchResultPage.style';
 import { PlaceContext } from 'context/PlaceContext';
+import axios from 'axios';
 
 function SearchResultPage() {
   const { places, isLoading } = useContext(PlaceContext);
+  const [data, setData] = useState({
+    title: '',
+    total: '',
+    list: []
+  });
 
   const { keyword, selectParam } = useParams();
 
@@ -15,6 +21,27 @@ function SearchResultPage() {
   }, [places]);
 
   console.log('keyword fo;rm url: ', keyword);
+
+  useEffect(() => {
+    console.log(selectParam, keyword, 'effect 부분');
+    getList(selectParam, keyword);
+  }, []);
+
+  const getList = async (selectParam, keyword) => {
+    let result = selectParam + keyword;
+    if (keyword === undefined) result = selectParam;
+    console.log(result, 'result');
+    try {
+      const response = await axios.get(`http://localhost:5001/mapList/${result}`);
+      console.log('response', response.data.result);
+      let { title, total, list } = response.data.result;
+
+      setData({ ...data, title, total, list });
+      console.log(data, 'data');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   let contents;
 
