@@ -4,12 +4,21 @@ import * as St from './Layout.style';
 
 export default function Layout() {
   const navigate = useNavigate();
+
+  const handleNavigateAndReload = (path) => {
+    // 페이지 이동
+    navigate(path);
+
+    // 새로고침
+    window.location.reload();
+  };
+
   return (
     <>
       <St.HeaderWrapper>
         <St.HeaderTitleLogo
           onClick={() => {
-            navigate('/');
+            handleNavigateAndReload('/');
           }}
         ></St.HeaderTitleLogo>
       </St.HeaderWrapper>

@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from '../Search/Search';
 import * as St from '../Search/SearchResultPage.style';
+import { PlaceContext } from 'context/PlaceContext';
 
 function SearchResultPage() {
+  const { places, isLoading } = useContext(PlaceContext);
+
   const { keyword, selectParam } = useParams();
 
-  console.log('keyword form url: ', keyword);
+  // const isLoading = !places;
+  useEffect(() => {
+    console.log('place가 변경됐어요!!');
+  }, [places]);
+
+  console.log('keyword fo;rm url: ', keyword);
 
   let contents;
 
@@ -18,8 +26,28 @@ function SearchResultPage() {
           <St.HeaderTitle>{selectParam}</St.HeaderTitle>
         </St.HeaderImage>
         <Search />
-        <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
-        <div>여기는 '{selectParam}'의 관련한 내용이 들어갈 곳 입니다</div>
+        {!isLoading ? (
+          <St.ContentsWrapper>
+            <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
+            {places.map((place) => {
+              return (
+                <St.ContentsBox key={place.id}>
+                  <div>이미지들어가는 부분</div>
+                  <span>{place.title}</span>
+                </St.ContentsBox>
+              );
+            })}
+          </St.ContentsWrapper>
+        ) : (
+          '로딩중입니다'
+        )}
+        {/* <St.ContentsWrapper>
+          <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
+          <St.ContentsBox>
+            <div>이미지들어가는 부분</div>
+            <span>여기는 '{selectParam}'의 관련한 내용이 들어갈 곳 입니다</span>
+          </St.ContentsBox>
+        </St.ContentsWrapper> */}
       </>
     );
   } else if (selectParam !== '' && keyword !== '') {
@@ -32,12 +60,37 @@ function SearchResultPage() {
           </St.HeaderTitle>
         </St.HeaderImage>
         <Search />
-        <h2>
-          '{selectParam}'의 '{keyword}' 지역 주변 검색 결과입니다
-        </h2>
-        <div>
-          여기는 '{selectParam}'의 '{keyword}' 지역에 관련한 내용이 들어갈 곳 입니다
-        </div>
+
+        {!isLoading ? (
+          <St.ContentsWrapper>
+            <h2>
+              '{selectParam}'의 '{keyword}' 지역 주변 검색 결과입니다
+            </h2>
+            {places.map((place) => {
+              return (
+                <St.ContentsBox key={place.id}>
+                  <div>이미지들어가는 부분</div>
+                  <span>{place.title}</span>
+                </St.ContentsBox>
+              );
+            })}
+          </St.ContentsWrapper>
+        ) : (
+          '로딩중입니다'
+        )}
+
+        {/* <St.ContentsWrapper>
+          <h2>
+            '{selectParam}'의 '{keyword}' 지역 주변 검색 결과입니다
+          </h2>
+          <St.ContentsBox>
+            <div>이미지들어가는 부분</div>
+            <span>
+              여기는 '{selectParam}'의 '{keyword}' 지역에 관련한 내용이 들어갈 곳 입니다
+              {places[0].title}
+            </span>
+          </St.ContentsBox>
+        </St.ContentsWrapper> */}
       </>
     );
   }

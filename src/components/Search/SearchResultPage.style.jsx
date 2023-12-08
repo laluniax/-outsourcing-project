@@ -18,6 +18,7 @@ import Gyeongbuk from '../../assets/LocalImage/GyeongbukImage.jpeg';
 import Gyeongnam from '../../assets/LocalImage/GyeongnamImage.jpeg';
 import Jeju from '../../assets/LocalImage/JejuImage.jpeg';
 import Gwangwon from '../../assets/LocalImage/GwangwonImage.jpeg';
+import { MainContentsWrapper } from 'components/Main/MainContents.style';
 
 const regions = {
   서울: Seoul,
@@ -59,4 +60,31 @@ export const HeaderTitle = styled.h1`
   color: #fff;
   font-size: 82px;
   text-align: center;
+`;
+
+export const ContentsWrapper = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+`;
+
+export const ContentsBox = styled.div`
+  background-color: red;
+  width: 50%;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  div {
+    background-color: #fff;
+    width: 400px;
+    height: 250px;
+  }
 `;
