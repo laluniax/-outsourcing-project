@@ -7,6 +7,7 @@ import axios from 'axios';
 
 function SearchResultPage() {
   const { places, isLoading } = useContext(PlaceContext);
+  const { setPlaces, setIsLoading } = useContext(PlaceContext);
   const [data, setData] = useState({
     title: '',
     total: '',
@@ -32,11 +33,13 @@ function SearchResultPage() {
     if (keyword === undefined) result = selectParam;
     console.log(result, 'result');
     try {
+      setIsLoading(true);
       const response = await axios.get(`http://localhost:5001/mapList/${result}`);
       console.log('response', response.data.result);
       let { title, total, list } = response.data.result;
 
       setData({ ...data, title, total, list });
+      setIsLoading(false);
       console.log(data, 'data');
     } catch (err) {
       console.log(err);
@@ -56,25 +59,26 @@ function SearchResultPage() {
         {!isLoading ? (
           <St.ContentsWrapper>
             <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
-            {places.map((place) => {
+            {/* {console.log(data.list[1].title, '이거는 뭘까여')} */}
+            {data.list.map((list) => {
               return (
-                <St.ContentsBox key={place.id}>
-                  <div>이미지들어가는 부분</div>
-                  <span>{place.title}</span>
+                <St.ContentsBox key={list.id}>
+                  <St.ContentsImage>이미지들어가는 부분</St.ContentsImage>
+                  <St.ContentsBoxInfor>
+                    <St.TitleStyle>{list.title}</St.TitleStyle>
+                    <St.AddressStyle>{list.address}</St.AddressStyle>
+                  </St.ContentsBoxInfor>
                 </St.ContentsBox>
               );
             })}
           </St.ContentsWrapper>
         ) : (
-          '로딩중입니다'
+          <St.LoadingInforWrapper>
+            <St.LoadingIconDiv />
+
+            <span>정보를 불러오고 있습니다 잠시만 기다려주세요</span>
+          </St.LoadingInforWrapper>
         )}
-        {/* <St.ContentsWrapper>
-          <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
-          <St.ContentsBox>
-            <div>이미지들어가는 부분</div>
-            <span>여기는 '{selectParam}'의 관련한 내용이 들어갈 곳 입니다</span>
-          </St.ContentsBox>
-        </St.ContentsWrapper> */}
       </>
     );
   } else if (selectParam !== '' && keyword !== '') {
@@ -93,31 +97,26 @@ function SearchResultPage() {
             <h2>
               '{selectParam}'의 '{keyword}' 지역 주변 검색 결과입니다
             </h2>
-            {places.map((place) => {
+            {/* {console.log(data.list[1].title, '이거는 뭘까여')} */}
+            {data.list.map((list) => {
               return (
-                <St.ContentsBox key={place.id}>
-                  <div>이미지들어가는 부분</div>
-                  <span>{place.title}</span>
+                <St.ContentsBox key={list.id}>
+                  <St.ContentsImage>이미지들어가는 부분</St.ContentsImage>
+                  <St.ContentsBoxInfor>
+                    <St.TitleStyle>{list.title}</St.TitleStyle>
+                    <St.AddressStyle>{list.address}</St.AddressStyle>
+                  </St.ContentsBoxInfor>
                 </St.ContentsBox>
               );
             })}
           </St.ContentsWrapper>
         ) : (
-          '로딩중입니다'
-        )}
+          <St.LoadingInforWrapper>
+            <St.LoadingIconDiv />
 
-        {/* <St.ContentsWrapper>
-          <h2>
-            '{selectParam}'의 '{keyword}' 지역 주변 검색 결과입니다
-          </h2>
-          <St.ContentsBox>
-            <div>이미지들어가는 부분</div>
-            <span>
-              여기는 '{selectParam}'의 '{keyword}' 지역에 관련한 내용이 들어갈 곳 입니다
-              {places[0].title}
-            </span>
-          </St.ContentsBox>
-        </St.ContentsWrapper> */}
+            <span>정보를 불러오고 있습니다 잠시만 기다려주세요</span>
+          </St.LoadingInforWrapper>
+        )}
       </>
     );
   }

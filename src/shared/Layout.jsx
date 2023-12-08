@@ -23,7 +23,9 @@ export default function Layout() {
         ></St.HeaderTitleLogo>
       </St.HeaderWrapper>
       <Outlet />
-      <div>Footer</div>
+      <St.FooterWrapper>
+        <p>Copyright 2023. 산책어때 All rights reserved.</p>
+      </St.FooterWrapper>
     </>
   );
 }

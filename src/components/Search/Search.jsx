@@ -92,6 +92,7 @@ function Search() {
     // getList(selectParam, keyword);
 
     console.log({ keyword, selectParam });
+    window.location.reload();
   };
 
   return (

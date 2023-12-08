@@ -22,12 +22,14 @@ export const MainContentsWrapper = styled.form`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 50px;
 `;
 
 export const ContentsWrapper = styled.div`
   width: 1050px;
   font-size: 32px;
   font-weight: 700;
+  margin-top: 50px;
   span {
     font-size: 16px;
     color: #7b7b7b;

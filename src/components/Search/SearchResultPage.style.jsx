@@ -1,6 +1,8 @@
 import { css, styled } from 'styled-components';
 import { colors } from 'styles/GlobalColors';
 
+import LoadingIcon from '../../assets/loading.gif';
+
 import Seoul from '../../assets/LocalImage/SeoulImage.jpeg';
 import Busan from '../../assets/LocalImage/BusanImage.jpeg';
 import Deagu from '../../assets/LocalImage/DaeguImage.jpg';
@@ -69,22 +71,78 @@ export const ContentsWrapper = styled.section`
   justify-content: center;
   align-items: center;
   text-align: center;
-
+  gap: 45px;
   h2 {
     margin-bottom: 20px;
+    font-family: 'yg-jalnan';
+    font-size: 36px;
+    color: ${colors.mainColor};
+    margin: 50px 0 50px 0;
   }
 `;
 
 export const ContentsBox = styled.div`
-  background-color: red;
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0px 4px 27px 0px rgba(0, 0, 0, 0.05);
   width: 50%;
   padding: 20px;
   display: flex;
-  gap: 10px;
-  margin-bottom: 30px;
-  div {
-    background-color: #fff;
-    width: 400px;
-    height: 250px;
+  gap: 20px;
+`;
+
+export const ContentsImage = styled.div`
+  background-color: #c2c2c2;
+  width: 400px;
+  height: 250px;
+  border-radius: 10px;
+`;
+
+export const ContentsBoxInfor = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+export const TitleStyle = styled.span`
+  color: ${colors.mainColor};
+  font-size: 32px;
+  font-weight: 700;
+  width: 200px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const AddressStyle = styled.span`
+  color: #000;
+  font-size: 18px;
+  font-weight: 500;
+  width: 200px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const LoadingInforWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-family: 'yg-jalnan';
+    color: ${colors.mainColor};
+    font-size: 28px;
   }
+`;
+
+export const LoadingIconDiv = styled.div`
+  background-image: url(${LoadingIcon});
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
