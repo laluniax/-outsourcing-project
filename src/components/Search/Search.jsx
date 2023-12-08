@@ -49,7 +49,7 @@ function Search() {
 
     // 새로운 URL 경로를 검색어와 함께 구성합니다.
     const newPath = keyword ? `/select/${encodeURIComponent(selectParam)}/search/${encodeURIComponent(keyword)}` : '/';
-    const noSelect = keyword ? `/search/${encodeURIComponent(keyword)}` : `/`;
+    const noSelect = `/`;
     const nokeyword = selectParam ? `/select/${encodeURIComponent(selectParam)}` : `/`;
 
     if (keyword !== '' && selectParam !== '') {
@@ -57,6 +57,7 @@ function Search() {
     } else if (keyword === '' && selectParam !== '') {
       navigate(nokeyword);
     } else if (keyword !== '' && selectParam === '') {
+      alert('산책로 검색을 위해 지역을 선택해주세요');
       navigate(noSelect);
     }
 
