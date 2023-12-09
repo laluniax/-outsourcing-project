@@ -85,7 +85,7 @@ export const ContentsBox = styled.div`
   border-radius: 30px;
   background: #fff;
   box-shadow: 0px 4px 27px 0px rgba(0, 0, 0, 0.05);
-  width: 50%;
+  width: 680px;
   padding: 20px;
   display: flex;
   gap: 20px;
