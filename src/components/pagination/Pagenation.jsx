@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as S from './Pagenation.styled';
-export default function Pagination() {
+
+export default function Pagination({ data }) {
   const [datas, setDatas] = useState([]);
 
   //현재 페이지, 전체 페이지 상태
