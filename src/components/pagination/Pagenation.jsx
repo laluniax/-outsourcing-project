@@ -15,33 +15,33 @@ export default function Pagination() {
 
   // 서버에서 데이터 가져오기
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/mapDetail/11841600`);
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const fetchData = async (page) => {
+  // const fetchData = async () => {
   //   try {
-  //     const { data, headers } = await axios.get(`${REACT_APP_SERVER_URL}` / mapDetail, {
-  //       // 페이지 나눠주기
-  //       params: { _page: page, _limit: pageItemLimit }
-  //     });
-
-  //     // 전체 페이지 수를 계산하여 설정                 headers에서 전체 데이터 개수를 나타내는 값 가져오기
-  //     const totalPageCount = Math.ceil(headers['x-total-count'] / pageItemLimit);
-  //     setTotalPages(totalPageCount);
-
-  //     // 현재 페이지의 데이터 설정
-  //     setDatas(data);
+  //     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/mapList/11841600`);
+  //     console.log(response);
+  //     return response;
   //   } catch (error) {
-  //     console.error('Error fetching data:', error);
+  //     console.log(error);
   //   }
   // };
+
+  const fetchData = async (page) => {
+    try {
+      const { data, headers } = await axios.get(`${process.env.REACT_APP_SERVER_URL}/mapList/11841600`, {
+        // 페이지 나눠주기
+        params: { _page: page, _limit: pageItemLimit }
+      });
+
+      // 전체 페이지 수를 계산하여 설정                 headers에서 전체 데이터 개수를 나타내는 값 가져오기
+      const totalPageCount = Math.ceil(headers['x-total-count'] / pageItemLimit);
+      setTotalPages(totalPageCount);
+
+      // 현재 페이지의 데이터 설정
+      setDatas(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   // 현재 페이지가 변경되었을 때 fetchData실행
   useEffect(() => {
