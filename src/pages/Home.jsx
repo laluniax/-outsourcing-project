@@ -1,5 +1,15 @@
-import Search from 'components/Search';
+import Search from '../components/Search/Search';
+import HeaderImage from 'components/Header/HeaderImage';
+import MainContents from 'components/Main/MainContents';
 
 export default function Home() {
-  return <Search />;
+  return (
+    <>
+      <section>
+        <HeaderImage></HeaderImage>
+        <Search />
+        <MainContents />
+      </section>
+    </>
+  );
 }
