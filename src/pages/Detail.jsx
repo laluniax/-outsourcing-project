@@ -9,9 +9,32 @@ import { addComments, getComments } from '../axios/commentAPI';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FaRegCommentDots } from 'react-icons/fa';
-
+import * as St from '../components/Search/SearchResultPage.style';
+import { MdDeleteOutline } from 'react-icons/md';
+import { FaRegEdit } from 'react-icons/fa';
+import { MdOutlineCancel } from 'react-icons/md';
+import { MdDoneOutline } from 'react-icons/md';
 const { kakao } = window;
 const Detail = () => {
+  // ------------------댓글 수정 삭제 --------------------
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedComment, setEditedComment] = useState(null); // Store edited comment
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleDeleteClick = () => {};
+
+  const handleSaveEdit = () => {
+    setIsEditing(false); // Set editing mode to false after saving changes
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+  // ------------------댓글 수정 삭제 --------------------
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addComments,
@@ -26,6 +49,8 @@ const Detail = () => {
     event.preventDefault();
     const date = new Date();
     const newComment = {
+      postTitle: '',
+      commentNum: shortId.generate(),
       id,
       pw,
       comment,
@@ -91,7 +116,7 @@ const Detail = () => {
       const crawlingData = async () => {
         // http://localhost:5000/mapDetail/11841600
         // const str = '서울중구';
-        const response = await axios.get(`http://localhost:5000/mapDetail/11841600`);
+        const response = await axios.get(`http://localhost:5000/mapDetail/25411853`);
         setDetailInfo(response.data.result);
       };
       crawlingData();
@@ -179,6 +204,7 @@ const Detail = () => {
   }
   console.log('디테일인포', detailInfo);
   // ------------------댓글 등록 ---------------------
+
   return (
     <>
       {detailInfo ? (
@@ -244,15 +270,16 @@ const Detail = () => {
           {/* ----------별점 & 리뷰수 ------------ */}
           {/* -----------------리뷰 리스트 -------------------- */}
           <S.REVIEW_DIV_BOX>
-            {detailInfo?.reivewList.slice(0, 5).map((list) => {
-              return (
+            {detailInfo?.reivewList
+              .filter((list) => list.reviewUserText.trim() !== '') // 공백이 아닌 댓글 필터링
+              .slice(0, 5) // 최대 5개의 댓글 제한
+              .map((list) => (
                 <S.REVIEW_DIV key={shortId.generate()}>
                   <S.REVIEW_TEXT>{list.reviewUserText}</S.REVIEW_TEXT>
                   <S.REVIEW_NAME>{list.reviewUserName}</S.REVIEW_NAME>
                   <S.REVIEW_DATE>{list.reviewUserDate}</S.REVIEW_DATE>
                 </S.REVIEW_DIV>
-              );
-            })}
+              ))}
           </S.REVIEW_DIV_BOX>
           {/* -----------------리뷰 리스트 -------------------- */}
           {/* ----------------댓글 탭 ------------- */}
@@ -292,15 +319,49 @@ const Detail = () => {
                   <S.COMMENT_BUTTON>댓글등록</S.COMMENT_BUTTON>
                 </div>
               </S.FORM>
-              {CommentList.map((list) => {
+              {CommentList?.reverse().map((list) => {
                 return (
                   <>
                     <S.COMMENT_LIST>
-                      <div>
-                        <S.COMMENT_TEXT>아이디: </S.COMMENT_TEXT>
-                        <span key={shortId.generate()}>{list.id}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div>
+                          <S.COMMENT_TEXT>아이디: </S.COMMENT_TEXT>
+                          <span key={shortId.generate()}>{list.id}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div style={{ marginLeft: '10px' }}>
+                            {isEditing ? (
+                              <>
+                                <S.SAVE_BUTTON onClick={handleSaveEdit}>
+                                  <MdDoneOutline />
+                                </S.SAVE_BUTTON>
+                                <S.CANCEL_BUTTON onClick={handleCancelEdit}>
+                                  <MdOutlineCancel />
+                                </S.CANCEL_BUTTON>
+                              </>
+                            ) : (
+                              <>
+                                <S.EDIT_BUTTON onClick={handleEditClick}>
+                                  <FaRegEdit />
+                                </S.EDIT_BUTTON>
+                                <S.DELETE_BUTTON onClick={handleDeleteClick}>
+                                  <MdDeleteOutline />
+                                </S.DELETE_BUTTON>
+                              </>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <S.COMMENT_CONTENT>{list.comment}</S.COMMENT_CONTENT>
+                      {isEditing ? (
+                        <textarea
+                          value={editedComment}
+                          onChange={(e) => setEditedComment(e.target.value)}
+                          rows={4}
+                          cols={50}
+                        />
+                      ) : (
+                        <S.COMMENT_CONTENT>{list.comment}</S.COMMENT_CONTENT>
+                      )}
                       <S.COMMENT_DATE>{list.date}</S.COMMENT_DATE>
                     </S.COMMENT_LIST>
                   </>
@@ -407,7 +468,11 @@ const Detail = () => {
           {/* ------------지도 탭 --------------- */}
         </div>
       ) : (
-        <div>로딩중입니다!!!!!!!!!!!!!!!</div>
+        <St.LoadingInforWrapper>
+          <St.LoadingIconDiv />
+
+          <span>정보를 불러오고 있습니다 잠시만 기다려주세요</span>
+        </St.LoadingInforWrapper>
       )}
     </>
   );

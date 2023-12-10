@@ -1,58 +1,36 @@
 {
   "comments": [
     {
-      "num": 1,
-      "comment": "정말 좋은 산책로 입니다! 다시한번 가고 싶어요!",
-      "id": "jinxx",
-      "password": "12345"
-    },
-    {
-      "id": "GmYDJp1",
-      "pw": null,
-      "comment": "다시한번 가고 싶은 장소였습니다! 가족과 함께 해서 더욱더 최고!",
-      "date": "2023년 11월 9일  21시 22분"
-    },
-    {
-      "id": "jinx",
-      "pw": null,
-      "comment": null,
-      "date": "2023년 11월 9일  21시 56분"
-    },
-    {
-      "id": "minyong",
-      "pw": "1234123",
-      "comment": "좋아요 !!!",
-      "date": "2023년 11월 9일  22시 14분"
-    },
-    {
-      "id": "rGttlI5",
-      "pw": "",
-      "comment": "재밌는 산책이였습니다!!",
-      "date": "2023년 11월 9일  23시 25분"
-    },
-    {
-      "id": "jo",
+      "id": "hongjinkyung",
       "pw": "1234",
-      "comment": "멋진 야경 ! 멋진 추억!",
-      "date": "2023년 11월 9일  23시 36분"
+      "comment": "가족과 함께해서 더욱더 재밌었어요 ^^",
+      "date": "2023년 11월 10일  11시 42분"
     },
     {
-      "id": "juan",
+      "id": "u-jae-seok",
+      "pw": "1234",
+      "comment": "즐거운 산책이였습니다~",
+      "date": "2023년 11월 10일  11시 43분"
+    },
+    {
+      "id": "good",
+      "pw": "1234",
+      "comment": "오랜만에 자연을 느낄 수 있었습니다.",
+      "date": "2023년 11월 10일  11시 45분"
+    },
+    {
+      "id": "jungkook",
       "pw": "12345",
-      "comment": "재밌는 시간이였습니다!",
-      "date": "2023년 11월 9일  23시 49분"
+      "comment": "멋지다 !!!!!!!!!!!!",
+      "date": "2023년 11월 10일  11시 49분"
     },
     {
-      "id": "VtdZk3O",
-      "pw": null,
-      "comment": null,
-      "date": "2023년 11월 10일  0시 1분"
-    },
-    {
-      "id": "m2UkZ1P",
-      "pw": null,
-      "comment": null,
-      "date": "2023년 11월 10일  3시 1분"
+      "postTitle": "",
+      "commentNum": "8spXe5saT",
+      "id": "olvia rodrigo",
+      "pw": "12345",
+      "comment": "좋아요 아주",
+      "date": "2023년 11월 10일  12시 18분"
     }
   ]
 }

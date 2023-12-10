@@ -21,8 +21,6 @@ export const ROADVIEW_BUTTON = styled.button`
 // -------------슬라이드 버튼 -------------
 export const SLIDE_BUTTON = styled.button`
   background-color: white;
-
-  background-image: inherit;
   border: none;
   color: black;
   text-align: center;
@@ -31,11 +29,14 @@ export const SLIDE_BUTTON = styled.button`
   font-size: 13px;
   margin: 4px 4px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 50%; /* 원형 모양으로 */
   transition-duration: 0.4s;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 32px; /* 너비와 높이를 같게 설정하여 원 모양 유지 */
+  height: 32px;
   &:hover {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    background-color: #f0f0f0; /* 배경색 약간 어둡게 변경 */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* 그림자 효과 변경 */
   }
 `;
 // -------------슬라이드 버튼 -------------
@@ -48,7 +49,7 @@ export const TAP_BUTTON_DIV = styled.div`
 `;
 export const TAP_BUTTON = styled.button`
   background-color: white;
-  color: #ccc;
+  color: #49627a;
   width: 80vh;
   padding: 10px 20px;
   text-align: center;
@@ -78,7 +79,7 @@ export const TEXTAREA = styled.textarea`
   border-radius: 7px;
 
   &:focus {
-    border: 2px solid #f44444;
+    border: 2px solid #f44044;
   }
 `;
 
@@ -100,7 +101,7 @@ export const INPUT_BOX = styled.input`
   transition: border-bottom 0.01;
 
   &:focus {
-    border-bottom: 2px solid #f44444;
+    border-bottom: 2px solid #f44044;
   }
 `;
 
@@ -117,13 +118,51 @@ export const COMMENT_BUTTON = styled.button`
   transition: background-color 0.3s, color 0.3s;
 
   &:hover {
-    background-color: #f44444;
+    background-color: #f44044;
     border-color: #f44444;
     color: #fff;
   }
 `;
 // -----------------댓글 등록 버튼 -----------------
 
+// ----------------댓글 수정 , 삭제 버튼 --------------
+export const EDIT_BUTTON = styled.button`
+  background-color: transparent;
+  border: none;
+  &:hover {
+    color: black;
+    cursor: pointer;
+    border-bottom: 2px solid #555555;
+  }
+`;
+export const DELETE_BUTTON = styled.button`
+  border: none;
+  background-color: transparent;
+  &:hover {
+    color: black;
+    cursor: pointer;
+    border-bottom: 2px solid #555555;
+  }
+`;
+export const SAVE_BUTTON = styled.button`
+  background-color: transparent;
+  border: none;
+  &:hover {
+    color: black;
+    cursor: pointer;
+    border-bottom: 2px solid #555555;
+  }
+`;
+export const CANCEL_BUTTON = styled.button`
+  background-color: transparent;
+  border: none;
+  &:hover {
+    color: black;
+    cursor: pointer;
+    border-bottom: 2px solid #555555;
+  }
+`;
+// ----------------댓글 수정 , 삭제 버튼 --------------
 export const RATING_REVIEW = styled.div`
   display: flex;
   flex-direction: row;
@@ -184,7 +223,7 @@ export const COMMENT_LIST = styled.div`
   margin: 14px 0;
   width: 100vh;
   border: 1px solid #ccc;
-  background-color: #f5f5f5;
+  background-color: #fafafa;
   border-radius: 7px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   letter-spacing: 0.3px;
@@ -207,7 +246,7 @@ export const COMMENT_CONTENT = styled.div`
 `;
 
 export const COMMENT_DATE = styled.div`
-  margin: 10px 0 0 0;
+  margin: 20px 0 0 0;
   font-size: 12px;
   color: #777777;
   font-style: italic;
@@ -226,11 +265,11 @@ export const MAIN_IMAGE_DIV = styled.div`
 export const MAIN_IMG = styled.img`
   width: 100%;
   height: 90%;
-  border-radius: 4px;
+  border-radius: 7px;
   max-width: 100%;
   transition: all 0.2s linear;
   &:hover {
-    transform: scale(1.01);
+    filter: brightness(80%); /* 이미지 어둡게 처리 */
     cursor: pointer;
   }
 `;
@@ -243,12 +282,15 @@ export const RATING_COUNT_DIV = styled.div`
 `;
 
 export const SUB_TEXT = styled.div`
+  color: #49627a;
   margin-bottom: 15px;
   font-size: 20px;
   font-weight: bold;
 `;
 export const MAIN_TEXT = styled.div`
-  margin-bottom: 15px;
+  color: #333333;
+  margin-bottom: 35px;
+  margin-top: 35px;
   font-size: 27px;
   font-weight: bold;
 `;
@@ -295,4 +337,5 @@ export const REVIEW_DATE = styled.div`
   font-size: 12px;
   color: #888;
 `;
+
 // --------------------------리뷰 관련한 것들 -----------------

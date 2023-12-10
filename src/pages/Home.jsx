@@ -1,7 +1,15 @@
-import React from 'react';
+import Search from '../components/Search/Search';
+import HeaderImage from 'components/Header/HeaderImage';
+import MainContents from 'components/Main/MainContents';
 
-const Home = () => {
-  return <div>Home</div>;
-};
-
-export default Home;
+export default function Home() {
+  return (
+    <>
+      <section>
+        <HeaderImage></HeaderImage>
+        <Search />
+        <MainContents />
+      </section>
+    </>
+  );
+}
