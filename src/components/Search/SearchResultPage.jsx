@@ -38,11 +38,6 @@ function SearchResultPage() {
       const response = await axios.get(`http://localhost:5001/mapList/${result}`);
       console.log('response', response.data.result);
       let { title, total, list } = response.data.result;
-      list.map((num) => {
-        const linkParam = num.link.split('/');
-        return linkParam[3];
-      });
-      console.log(list, '<<<<<<<<<<<<<<<<<<<<<<<<<');
       setData({ ...data, title, total, list });
       setIsLoading(false);
       console.log(data, 'data');
