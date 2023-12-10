@@ -79,16 +79,28 @@ export const ContentsWrapper = styled.section`
     color: ${colors.mainColor};
     margin: 50px 0 50px 0;
   }
+  p {
+    font-weight: 700;
+    font-size: 20px;
+    color: #9a9a9a;
+  }
 `;
 
 export const ContentsBox = styled.div`
   border-radius: 30px;
   background: #fff;
   box-shadow: 0px 4px 27px 0px rgba(0, 0, 0, 0.05);
-  width: 680px;
-  padding: 20px;
+  width: 600px;
+  height: 200px;
+  padding: 30px;
   display: flex;
+  justify-content: center;
   gap: 20px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  &:hover {
+    transform: scale(1.08);
+  }
 `;
 
 export const ContentsImage = styled.div`
@@ -100,7 +112,22 @@ export const ContentsImage = styled.div`
 
 export const ContentsBoxInfor = styled.div`
   display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
+`;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AddInforWrapper = styled.div`
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
 `;
 
@@ -108,11 +135,13 @@ export const TitleStyle = styled.span`
   color: ${colors.mainColor};
   font-size: 32px;
   font-weight: 700;
-  width: 200px;
+  width: 240px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-family: 'yg-jalnan';
+  line-height: 80px;
 `;
 
 export const AddressStyle = styled.span`
@@ -124,6 +153,7 @@ export const AddressStyle = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  text-align: center;
 `;
 
 export const LoadingInforWrapper = styled.div`
