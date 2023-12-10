@@ -17,7 +17,7 @@ export default function Router() {
             <Route path="/" element={<Home />} />
             <Route path="/mapList/:selectParam/:keyword" element={<SearchResultPage />} />
             <Route path="/mapList/:selectParam" element={<SearchResultPage />} />
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:id" element={<Detail />} />
             {/* <Route path="/search/:keyword" element={<Navigate replace to="/" />} /> */}
             <Route path="*" element={<Navigate replace to="/" />} />
           </Route>
