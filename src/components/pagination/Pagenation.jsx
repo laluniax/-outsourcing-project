@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as St from './Pagenation.styled';
 
-export default function Pagination({ data }) {
+export default function Pagination({ data ,currentPage,setCurrentPage}) {
   const [datas, setDatas] = useState([]);
   //현재 페이지, 전체 페이지 상태
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   // 한 페이지에 보여줄 아이템 개수
@@ -19,21 +18,22 @@ export default function Pagination({ data }) {
   // 페이지네이션을 할 때 데이터를 몇개씩 가져올 수 있는지 설정해줘야 함
   // 크롤링한 list에서 파일 가져와야함
 
-  // const fetchData = async (page) => {
-  //   try {
-  //     // 페이지 나눠주기
-  //     const dataList = { params: { _page: page, _limit: pageItemLimit } };
+  const fetchData = async (page) => {
+    try {
+      // 페이지 나눠주기
+      const dataList = { params: { _page: page, _limit: pageItemLimit } };
 
-  //     // 전체 페이지 수를 계산하여 설정
-  //     const totalPageCount = Math.ceil(data.length / pageItemLimit);
+      // 전체 페이지 수를 계산하여 설정
+      const totalPageCount = Math.ceil(data.length / pageItemLimit);
 
-  //     setTotalPages(totalPageCount);
-  //     // 현재 페이지의 데이터 설정
-  //     setDatas(data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
+      setTotalPages(totalPageCount);
+      // 현재 페이지의 데이터 설정
+      setDatas(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
 
   useEffect(() => {
     // 전체 페이지 갯수 구하기
@@ -49,11 +49,11 @@ export default function Pagination({ data }) {
   // }, [currentPage]);
 
   //현재 페이지 함수
-  const getCurrentPageData = (page, dataList) => {
-    const startIndex = (page - 1) * pageItemLimit;
-    const endIndex = startIndex + pageItemLimit;
-    return dataList.slice(startIndex, endIndex);
-  };
+  // const getCurrentPageData = (page, dataList) => {
+  //   const startIndex = (page - 1) * pageItemLimit;
+  //   const endIndex = startIndex + pageItemLimit;
+  //   return dataList.slice(startIndex, endIndex);
+  // };
 
   //클릭 했을 때 현재 페이지로 가도록
   const handlePageClick = (selectedPage) => {
