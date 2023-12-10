@@ -13,10 +13,11 @@ const addComments = async (newComment) => {
 };
 
 const updateComments = async (newComment) => {
+  alert('맞아 ?이게 ???');
   await axios.patch(`${COMMENT_URL}/comments`, newComment);
 };
 
 const deleteComments = async () => {
   await axios.delete(`${COMMENT_URL}/comments`);
 };
-export { getComments, addComments, updateComments };
+export { getComments, addComments, updateComments, deleteComments };
