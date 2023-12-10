@@ -258,13 +258,47 @@ export const MAIN_IMAGE_DIV = styled.div`
   position: relative;
   overflow: hidden;
   text-align: center;
-  height: 60vh;
-  width: 75vh;
+  height: 70vh;
+  width: 70vh;
 `;
 
-export const MAIN_IMG = styled.img`
+// -----------------------모달 이미지 -------------------------
+export const ImageContainer = styled.div`
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 5px;
+`;
+
+export const MainImageWrapper = styled.div`
+  grid-column: 1 / 2;
+  grid-row: 1 / span 2;
+  height: auto;
+`;
+
+export const MainImage = styled.img`
+  border-radius: 7px;
   width: 100%;
-  height: 90%;
+  height: 100%;
+
+  max-width: 100%;
+  transition: all 0.2s linear;
+  &:hover {
+    filter: brightness(80%); /* 이미지 어둡게 처리 */
+    cursor: pointer;
+  }
+`;
+
+export const SubImagesWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  grid-column: 2 / 3;
+`;
+
+export const SubImage = styled.img`
+  border-radius: 7px;
+  width: 100%;
+  height: 100%;
   border-radius: 7px;
   max-width: 100%;
   transition: all 0.2s linear;
@@ -273,6 +307,7 @@ export const MAIN_IMG = styled.img`
     cursor: pointer;
   }
 `;
+// -----------------------모달 이미지 -------------------------
 
 // ----------산책로 메인 이미지 ---------
 export const RATING_COUNT_DIV = styled.div`
@@ -282,12 +317,14 @@ export const RATING_COUNT_DIV = styled.div`
 `;
 
 export const SUB_TEXT = styled.div`
+  font-family: 'yg-jalnan';
   color: #49627a;
   margin-bottom: 15px;
   font-size: 20px;
   font-weight: bold;
 `;
 export const MAIN_TEXT = styled.div`
+  font-family: 'yg-jalnan';
   color: #333333;
   margin-bottom: 35px;
   margin-top: 35px;
@@ -308,10 +345,28 @@ export const MODAL_CONTAINER = styled.div`
 `;
 
 export const MODAL_CONTENT = styled.div`
-  position: absolute;
+  position: fixed;
+  width: 70%;
+  height: 70%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  overflow: hidden;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    max-width: none;
+    max-height: none;
+  }
 `;
 
 // ---------------------카카오 지도 ---------------------

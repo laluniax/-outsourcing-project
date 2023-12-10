@@ -10,7 +10,9 @@ function SearchResultPage() {
   const navigate = useNavigate();
   const { places, isLoading } = useContext(PlaceContext);
   const { setPlaces, setIsLoading } = useContext(PlaceContext);
-
+  const navigation = (number) => {
+    navigate(`/detail/${number}`);
+  };
   const [currentPage, setCurrentPage] = useState(1);
 
   const [data, setData] = useState({
@@ -65,25 +67,31 @@ function SearchResultPage() {
         </St.HeaderImage>
         <Search />
         {!isLoading ? (
-          <St.ContentsWrapper>
-            <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
-            {/* {console.log(data.list[1].title, '이거는 뭘까여')} */}
-            <p>총 검색 수는 '{data.total}'개 입니다.</p>
-            {currentPageItems.map((list) => {
-              return (
-                <St.ContentsBox key={list.id} onClick={() => navigate(`/detail/${list.link}`)}>
-                  {/* <St.ContentsImage>이미지들어가는 부분</St.ContentsImage> */}
-                  <St.ContentsBoxInfor>
-                    <St.TitleStyle>{list.title}</St.TitleStyle>
-                    <St.AddressStyle>{list.subTitle}</St.AddressStyle>
-                    <St.AddressStyle>{list.address}</St.AddressStyle>
-                    <St.AddressStyle>별점수 : {list.scoreNum}</St.AddressStyle>
-                    <St.AddressStyle>별점리뷰 : {list.scoreTxt}</St.AddressStyle>
-                  </St.ContentsBoxInfor>
-                </St.ContentsBox>
-              );
-            })}
-          </St.ContentsWrapper>
+          <>
+            <St.ContentsWrapper>
+              <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
+              {/* {console.log(data.list[1].title, '이거는 뭘까여')} */}
+              <p>총 검색 수는 '{data.total}'개 입니다.</p>
+              {currentPageItems.map((list) => {
+                return (
+                  <St.ContentsBox
+                    key={list.id}
+                    onClick={() => navigation(list.link.replaceAll('https://place.map.kakao.com/', ''))}
+                  >
+                    {/* <St.ContentsImage>이미지들어가는 부분</St.ContentsImage> */}
+                    <St.ContentsBoxInfor>
+                      <St.TitleStyle>{list.title}</St.TitleStyle>
+                      <St.AddressStyle>{list.subTitle}</St.AddressStyle>
+                      <St.AddressStyle>{list.address}</St.AddressStyle>
+                      <St.AddressStyle>별점수 : {list.scoreNum}</St.AddressStyle>
+                      <St.AddressStyle>별점리뷰 : {list.scoreTxt}</St.AddressStyle>
+                    </St.ContentsBoxInfor>
+                  </St.ContentsBox>
+                );
+              })}
+            </St.ContentsWrapper>
+            <Pagination data={data} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </>
         ) : (
           <St.LoadingInforWrapper>
             <St.LoadingIconDiv />
