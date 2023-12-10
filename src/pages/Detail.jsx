@@ -5,7 +5,7 @@ import * as S from './Detail.styled';
 import shortId from 'shortid';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { addComments, getComments } from '../axios/commentAPI';
+import { addComments, deleteComments, getComments, updateComments } from '../axios/commentAPI';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FaRegCommentDots } from 'react-icons/fa';
@@ -21,14 +21,21 @@ const Detail = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(null); // Store edited comment
 
-  const handleEditClick = () => {
+  const params = useParams();
+  const postNum = params.number;
+  //댓글 수정버튼
+  const handleEditClick = (event) => {
+    console.log('event가 나오려나?', event.target);
     setIsEditing(true);
   };
 
+  //댓글 삭제버튼
   const handleDeleteClick = () => {};
 
+  //댓글 수정 완료 버튼
   const handleSaveEdit = () => {
-    setIsEditing(false); // Set editing mode to false after saving changes
+    mutation.mutate(updateComments());
+    setIsEditing(false); //
   };
 
   const handleCancelEdit = () => {
@@ -39,9 +46,19 @@ const Detail = () => {
   const mutation = useMutation({
     mutationFn: addComments,
     onSuccess: () => {
-      console.log('성공했습니다');
       queryClient.invalidateQueries('comments');
+      console.log('성공했습니다');
     }
+    // mutationFn: updateComments,
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries('comments');
+    //   console.log('수정 성공하였습니다.');
+    // },
+    // mutationFn: deleteComments,
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries('comments');
+    //   console.log('삭제가 성공하였습니다!');
+    // }
   });
 
   //댓글 등록 버튼
@@ -49,7 +66,7 @@ const Detail = () => {
     event.preventDefault();
     const date = new Date();
     const newComment = {
-      postTitle: '',
+      postTitle: detailInfo?.title,
       commentNum: shortId.generate(),
       id,
       pw,
@@ -83,29 +100,54 @@ const Detail = () => {
   const mapRef = useRef();
   const roadviewRef = useRef();
 
-  const [center, setCenter] = useState({
-    lat: 33.450422139819736,
-    lng: 126.5709139924533
-  });
-  const myPosition = {
-    lat: 33.450422139819736,
-    lng: 126.5709139924533
-  };
-  useEffect(() => {
-    const map = mapRef.current;
-    const roadview = roadviewRef.current;
-    if (roadview && map) {
-      roadview.relayout();
-      map.relayout();
-      map.setCenter(new kakao.maps.LatLng(center.lat, center.lng));
-    }
-  }, [isVisible, center, isActive]);
-
   const Toggle = () => {
     setIsVisible(!isVisible);
     setisActive(!isActive);
   };
   // -------------카카오 지도 ---------------
+
+  //  ---------------------검색어로 카카오 지도 가져오기---------------
+  const [info, setInfo] = useState();
+  const [markers, setMarkers] = useState([]);
+  const [map, setMap] = useState();
+
+  useEffect(() => {
+    if (!map) return;
+    //카카오를 통해 places 함수를 실행해야 하는데, kakaomaps가 undefine ?
+    const fetchData = async () => {
+      // console.log('남산', new kakao.maps.services.Places());
+
+      const ps = await new kakao.maps.services.Places();
+      console.log('과연 가져올까?:', ps);
+      ps.keywordSearch(`${detailInfo?.title}`, (data, status, _pagination) => {
+        if (status === kakao.maps.services.Status.OK) {
+          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+          // LatLngBounds 객체에 좌표를 추가합니다
+          const bounds = new kakao.maps.LatLngBounds();
+          let markers = [];
+
+          for (var i = 0; i < data.length; i++) {
+            // @ts-ignore
+            markers.push({
+              position: {
+                lat: data[i].y,
+                lng: data[i].x
+              },
+              content: data[i].place_name
+            });
+            // @ts-ignore
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+          }
+          setMarkers(markers);
+
+          // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+          map.setBounds(bounds);
+        }
+      });
+    };
+    fetchData();
+  }, [map]);
+  //  ---------------------검색어로 카카오 지도 가져오기---------------
 
   //  ----------------리뷰 목록 뿌려주기 ---------------
 
@@ -114,9 +156,7 @@ const Detail = () => {
   useEffect(() => {
     try {
       const crawlingData = async () => {
-        // http://localhost:5000/mapDetail/11841600
-        // const str = '서울중구';
-        const response = await axios.get(`http://localhost:5000/mapDetail/25411853`);
+        const response = await axios.get(`http://localhost:5001/mapDetail/${postNum}`);
         setDetailInfo(response.data.result);
       };
       crawlingData();
@@ -126,7 +166,7 @@ const Detail = () => {
   }, []);
 
   //navigate를 통해 넘어온 state 값들 넣기
-  const params = useParams();
+
   //  ----------------리뷰 목록 뿌려주기 ---------------
 
   // ----------- 탭 버튼 -------------
@@ -172,24 +212,11 @@ const Detail = () => {
 
   //  ------------이미지 모달 -----------------
 
-  //  -----------------이미지 슬라이더 모달 ----------------
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
-  // const images = [detailInfo?.bannerImg.replaceAll('url("', '').replaceAll('")', '')];
-  const source = detailInfo?.bannerImg.replaceAll('url("', '').replaceAll('")', '');
   const images = [];
-  detailInfo?.photoList.forEach((item) => {
+  detailInfo?.photoList?.forEach((item) => {
     images.push(item.photoImg.replaceAll('url("', '').replaceAll('")', ''));
   });
-
-  //  -----------------이미지 슬라이더 모달 ----------------
+  const source = images;
 
   // ------------------댓글 등록 ---------------------
 
@@ -198,11 +225,11 @@ const Detail = () => {
     queryFn: getComments
   });
 
-  const CommentList = data;
+  // const CommentList = data;
+  const CommentList = data?.filter((list) => list.postTitle === detailInfo?.title);
   if (isLoading) {
     return <h1>로딩중입니다</h1>;
   }
-  console.log('디테일인포', detailInfo);
   // ------------------댓글 등록 ---------------------
 
   return (
@@ -221,6 +248,7 @@ const Detail = () => {
                 />
                 <span
                   style={{
+                    fontFamily: 'yg-jalnan',
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
@@ -234,17 +262,23 @@ const Detail = () => {
             </S.RATING_COUNT_DIV>
             <S.MAIN_IMAGE_DIV>
               <S.MAIN_TEXT>{detailInfo?.title}</S.MAIN_TEXT>
-              <S.MAIN_IMG onClick={() => openModal(source)} src={images[currentImageIndex]}></S.MAIN_IMG>
-              <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
-                <S.SLIDE_BUTTON onClick={prevSlide}>
-                  {' '}
-                  <FaChevronLeft />{' '}
-                </S.SLIDE_BUTTON>
-                <S.SLIDE_BUTTON onClick={nextSlide}>
-                  <FaChevronRight />
-                </S.SLIDE_BUTTON>
-                {/* <S.MAIN_IMG src={images[currentImageIndex]}></S.MAIN_IMG> */}
-              </div>
+
+              <S.ImageContainer>
+                <S.MainImageWrapper>
+                  <S.MainImage onClick={() => openModal(images[0])} src={images[0]} alt="Main Image" />
+                </S.MainImageWrapper>
+                <S.SubImagesWrapper>
+                  {images.slice(1, 5).map((image, index) => (
+                    <S.SubImage key={index} onClick={() => openModal(image)} src={image} alt={`Sub Image ${index}`} />
+                  ))}
+                </S.SubImagesWrapper>
+                {isModalOpen && (
+                  <div closeModal={closeModal}>
+                    <img src={selectedImage} alt="Selected Image" />
+                  </div>
+                )}
+              </S.ImageContainer>
+              <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}></div>
             </S.MAIN_IMAGE_DIV>
 
             {/* -------------이미지 슬라이더 ---------------- */}
@@ -261,7 +295,7 @@ const Detail = () => {
 
             <S.RATING_COUNT_DIV>
               <S.SUB_TEXT>리뷰 수</S.SUB_TEXT>
-              <div style={{ fontWeight: 'bold', fontSize: '20px' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '20px', fontFamily: 'yg-jalnan' }}>
                 {' '}
                 {detailInfo?.reivewPoint.replaceAll('개', '+')}
               </div>
@@ -271,7 +305,7 @@ const Detail = () => {
           {/* -----------------리뷰 리스트 -------------------- */}
           <S.REVIEW_DIV_BOX>
             {detailInfo?.reivewList
-              .filter((list) => list.reviewUserText.trim() !== '') // 공백이 아닌 댓글 필터링
+              ?.filter((list) => list.reviewUserText.trim() !== '') // 공백이 아닌 댓글 필터링
               .slice(0, 5) // 최대 5개의 댓글 제한
               .map((list) => (
                 <S.REVIEW_DIV key={shortId.generate()}>
@@ -311,7 +345,7 @@ const Detail = () => {
                     onChange={(e) => setId(e.target.value)}
                   />
                   <S.INPUT_BOX
-                    type="text"
+                    type="password"
                     placeholder="비밀번호를 입력하세요"
                     value={pw}
                     onChange={(e) => setPw(e.target.value)}
@@ -319,11 +353,14 @@ const Detail = () => {
                   <S.COMMENT_BUTTON>댓글등록</S.COMMENT_BUTTON>
                 </div>
               </S.FORM>
-              {CommentList?.reverse().map((list) => {
+              {CommentList?.map((list) => {
                 return (
                   <>
                     <S.COMMENT_LIST>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div
+                        key={shortId.generate()}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                      >
                         <div>
                           <S.COMMENT_TEXT>아이디: </S.COMMENT_TEXT>
                           <span key={shortId.generate()}>{list.id}</span>
@@ -341,7 +378,7 @@ const Detail = () => {
                               </>
                             ) : (
                               <>
-                                <S.EDIT_BUTTON onClick={handleEditClick}>
+                                <S.EDIT_BUTTON onClick={() => handleEditClick(event)}>
                                   <FaRegEdit />
                                 </S.EDIT_BUTTON>
                                 <S.DELETE_BUTTON onClick={handleDeleteClick}>
@@ -375,48 +412,27 @@ const Detail = () => {
           <div id="Map" className="tabcontent">
             <S.MAP_BOX>
               <div style={{ display: 'flex', position: 'relative', width: '1200px', height: '100%' }}>
-                {/* <RoadviewWithMapButtonStyle /> */}
-                <S.ROADVIEW_BUTTON onClick={Toggle}>
-                  <LiaStreetViewSolid style={{ width: '10px' }} />
-                  거리뷰
-                </S.ROADVIEW_BUTTON>
                 <Map // 로드뷰를 표시할 Container
-                  center={center}
+                  center={{
+                    lat: 37.566826,
+                    lng: 126.9786567
+                  }}
                   style={{
-                    // 지도의 크기
-                    width: !isVisible ? '100%' : '50%',
-                    height: '500px'
+                    width: '100%',
+                    height: '350px'
                   }}
                   level={3}
-                  ref={mapRef}
+                  onCreate={setMap}
                 >
-                  <MapMarker position={myPosition}>
-                    <div style={{ color: '#000', textAlign: 'center' }}> 산책로 이름</div>
-                  </MapMarker>
-                  {isActive && (
-                    <>
-                      <MapTypeId type={kakao.maps.MapTypeId.ROADVIEW} />
-                      <MapMarker
-                        position={center}
-                        draggable={true}
-                        onDragEnd={(marker) => {
-                          setCenter({
-                            lat: marker.getPosition().getLat(),
-                            lng: marker.getPosition().getLng()
-                          });
-                        }}
-                        image={{
-                          src: 'https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
-                          size: { width: 26, height: 46 },
-                          options: {
-                            spriteSize: { width: 1666, height: 168 },
-                            spriteOrigin: { x: 705, y: 114 },
-                            offset: { x: 13, y: 46 }
-                          }
-                        }}
-                      />
-                    </>
-                  )}
+                  {markers.map((marker) => (
+                    <MapMarker
+                      key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+                      position={marker.position}
+                      onClick={() => setInfo(marker)}
+                    >
+                      {info && info.content === marker.content && <div style={{ color: '#000' }}>{marker.content}</div>}
+                    </MapMarker>
+                  ))}
                 </Map>
                 <div
                   id="roadviewControl"
@@ -434,33 +450,7 @@ const Detail = () => {
                     width: isVisible ? '50%' : '0',
                     overflow: 'hidden'
                   }}
-                >
-                  <Roadview // 로드뷰를 표시할 Container
-                    position={{ ...center, radius: 50 }}
-                    style={{
-                      // 지도의 크기
-                      width: '100%',
-                      height: '500px'
-                    }}
-                    onPositionChanged={(rv) => {
-                      setCenter({
-                        lat: rv.getPosition().getLat(),
-                        lng: rv.getPosition().getLng()
-                      });
-                    }}
-                    onPanoidChange={() => {
-                      isActive && setIsVisible(true);
-                    }}
-                    onErrorGetNearestPanoId={() => {
-                      setIsVisible(false);
-                    }}
-                    ref={roadviewRef}
-                  >
-                    <div id="close" title="로드뷰닫기" onClick={() => setIsVisible(false)}>
-                      <span className="img"></span>
-                    </div>
-                  </Roadview>
-                </div>
+                ></div>
               </div>
             </S.MAP_BOX>
             {/* // ----------카카오 지도----------------- */}

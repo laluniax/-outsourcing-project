@@ -3,11 +3,16 @@ import { useParams } from 'react-router-dom';
 import Search from '../Search/Search';
 import * as St from '../Search/SearchResultPage.style';
 import { PlaceContext } from 'context/PlaceContext';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function SearchResultPage() {
   const { places, isLoading } = useContext(PlaceContext);
   const { setPlaces, setIsLoading } = useContext(PlaceContext);
+  const navigate = useNavigate();
+  const navigation = (number) => {
+    navigate(`/detail/${number}`);
+  };
   const [data, setData] = useState({
     title: '',
     total: '',
@@ -35,7 +40,6 @@ function SearchResultPage() {
     try {
       setIsLoading(true);
       const response = await axios.get(`http://localhost:5001/mapList/${result}`);
-      console.log('response', response.data.result);
       let { title, total, list } = response.data.result;
 
       setData({ ...data, title, total, list });
@@ -59,10 +63,14 @@ function SearchResultPage() {
         {!isLoading ? (
           <St.ContentsWrapper>
             <h2>'{selectParam}'의 주변 검색 결과입니다</h2>
-            {/* {console.log(data.list[1].title, '이거는 뭘까여')} */}
             {data.list.map((list) => {
               return (
-                <St.ContentsBox key={list.id}>
+                <St.ContentsBox
+                  key={list.id}
+                  onClick={() => {
+                    navigation(list.link.replaceAll('https://place.map.kakao.com/', ''));
+                  }}
+                >
                   <St.ContentsImage>이미지들어가는 부분</St.ContentsImage>
                   <St.ContentsBoxInfor>
                     <St.TitleStyle>{list.title}</St.TitleStyle>
