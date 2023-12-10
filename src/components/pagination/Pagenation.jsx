@@ -1,53 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import * as S from './Pagenation.styled';
+import * as St from './Pagenation.styled';
 
-export default function Pagination({ data }) {
+export default function Pagination({ data ,currentPage,setCurrentPage}) {
   const [datas, setDatas] = useState([]);
-
   //현재 페이지, 전체 페이지 상태
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   // 한 페이지에 보여줄 아이템 개수
-  const pageItemLimit = 20;
+  const pageItemLimit = 10;
   // 페이지 그룹당 보여줄 숫자 개수
   const pageGroupLimit = 5;
 
-  // 서버에서 데이터 가져오기
+  // 비동기 처리 안해도 되니까  props로 받아온 데이터 가져오고,
+  // 페이지 나눠주기 , 전체 페이지 수 계산해서 설정 , 현재 페이지 데이터 설정까지
 
-  const fetchData = async () => {
+  // 페이지네이션을 할 때 데이터를 몇개씩 가져올 수 있는지 설정해줘야 함
+  // 크롤링한 list에서 파일 가져와야함
+
+  const fetchData = async (page) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/mapDetail/11841600`);
-      console.log(response);
-      return response;
+      // 페이지 나눠주기
+      const dataList = { params: { _page: page, _limit: pageItemLimit } };
+
+      // 전체 페이지 수를 계산하여 설정
+      const totalPageCount = Math.ceil(data.length / pageItemLimit);
+
+      setTotalPages(totalPageCount);
+      // 현재 페이지의 데이터 설정
+      setDatas(data);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching data:', error);
     }
   };
+  
 
-  // const fetchData = async (page) => {
-  //   try {
-  //     const { data, headers } = await axios.get(`${REACT_APP_SERVER_URL}` / mapDetail, {
-  //       // 페이지 나눠주기
-  //       params: { _page: page, _limit: pageItemLimit }
-  //     });
-
-  //     // 전체 페이지 수를 계산하여 설정                 headers에서 전체 데이터 개수를 나타내는 값 가져오기
-  //     const totalPageCount = Math.ceil(headers['x-total-count'] / pageItemLimit);
-  //     setTotalPages(totalPageCount);
-
-  //     // 현재 페이지의 데이터 설정
-  //     setDatas(data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-
-  // 현재 페이지가 변경되었을 때 fetchData실행
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
+    // 전체 페이지 갯수 구하기
+    if (data.list && data.list.length > 0) {
+      const totalPageCount = Math.ceil(data.list.length / pageItemLimit);
+      setTotalPages(totalPageCount);
+    }
+  }, [data]);
+
+  // // 현재 페이지가 변경되었을 때 dataList 실행
+  // useEffect(() => {
+  //   fetchData(currentPage);
+  // }, [currentPage]);
+
+  //현재 페이지 함수
+  // const getCurrentPageData = (page, dataList) => {
+  //   const startIndex = (page - 1) * pageItemLimit;
+  //   const endIndex = startIndex + pageItemLimit;
+  //   return dataList.slice(startIndex, endIndex);
+  // };
 
   //클릭 했을 때 현재 페이지로 가도록
   const handlePageClick = (selectedPage) => {
@@ -78,33 +84,25 @@ export default function Pagination({ data }) {
 
   return (
     <>
-      {/* 임시로 데이터 가져오기 */}
-      {datas.map((item) => (
-        <S.CardBox key={item.id}>
-          <p>{item.id}</p>
-          <p>{item.first_name}</p>
-        </S.CardBox>
-      ))}
-
       {/* 페이지네이션 UI */}
-      <S.PaginationWrapper>
-        <S.PaginationButton onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1}>
+      <St.PaginationWrapper>
+        <St.PaginationButton onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1}>
           Prev
-        </S.PaginationButton>
+        </St.PaginationButton>
 
         {/* 페이지 그룹을 매핑하여 페이지네이션 버튼 생성 */}
         {array.map((item, index) => {
           return (
-            <S.PaginationButton key={index + 1} onClick={() => handlePageClick(item)} active={item === currentPage}>
+            <St.PaginationButton key={index + 1} onClick={() => handlePageClick(item)} active={item === currentPage}>
               {item}
-            </S.PaginationButton>
+            </St.PaginationButton>
           );
         })}
 
-        <S.PaginationButton onClick={() => handlePageClick(currentPage + 1)} disabled={currentPage === totalPages}>
+        <St.PaginationButton onClick={() => handlePageClick(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
-        </S.PaginationButton>
-      </S.PaginationWrapper>
+        </St.PaginationButton>
+      </St.PaginationWrapper>
     </>
   );
 }
