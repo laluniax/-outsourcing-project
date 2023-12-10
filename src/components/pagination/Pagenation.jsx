@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as St from './Pagenation.styled';
+import { colors } from 'styles/GlobalColors';
 
-export default function Pagination({ data ,currentPage,setCurrentPage}) {
+export default function Pagination({ data, currentPage, setCurrentPage }) {
   const [datas, setDatas] = useState([]);
   //현재 페이지, 전체 페이지 상태
   const [totalPages, setTotalPages] = useState(0);
@@ -33,7 +34,6 @@ export default function Pagination({ data ,currentPage,setCurrentPage}) {
       console.error('Error fetching data:', error);
     }
   };
-  
 
   useEffect(() => {
     // 전체 페이지 갯수 구하기
@@ -87,7 +87,7 @@ export default function Pagination({ data ,currentPage,setCurrentPage}) {
       {/* 페이지네이션 UI */}
       <St.PaginationWrapper>
         <St.PaginationButton onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1}>
-          Prev
+          이전
         </St.PaginationButton>
 
         {/* 페이지 그룹을 매핑하여 페이지네이션 버튼 생성 */}
@@ -100,7 +100,7 @@ export default function Pagination({ data ,currentPage,setCurrentPage}) {
         })}
 
         <St.PaginationButton onClick={() => handlePageClick(currentPage + 1)} disabled={currentPage === totalPages}>
-          Next
+          다음
         </St.PaginationButton>
       </St.PaginationWrapper>
     </>

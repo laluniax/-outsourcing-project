@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { colors } from 'styles/GlobalColors';
 
 export const ROADVIEW_BUTTON = styled.button`
   position: absolute;
@@ -46,19 +47,23 @@ export const TAP_BUTTON_DIV = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  gap: 100px;
+  margin-top: 30px;
 `;
 export const TAP_BUTTON = styled.button`
+  font-family: 'yg-jalnan';
   background-color: white;
   color: #49627a;
-  width: 80vh;
+
   padding: 10px 20px;
   text-align: center;
   font-size: 28px;
   border: none;
   /* border-bottom: 2px solid #f44444; */
   cursor: pointer;
+  transition: all 0.5s ease;
   &:hover {
-    color: black;
+    color: ${colors.mainColor};
     font-weight: bold;
   }
 `;
@@ -75,7 +80,7 @@ export const TEXTAREA = styled.textarea`
   transition: border-color 0.3s ease-in-out;
   resize: none;
   height: 16vh;
-  width: 100vh;
+  width: 50vh;
   border-radius: 7px;
 
   &:focus {
@@ -170,7 +175,7 @@ export const RATING_REVIEW = styled.div`
 `;
 export const REVIEW_COMMENT = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   justify-content: space-around;
@@ -258,8 +263,8 @@ export const MAIN_IMAGE_DIV = styled.div`
   position: relative;
   overflow: hidden;
   text-align: center;
-  height: 70vh;
-  width: 70vh;
+  height: 60vh;
+  width: 60vh;
 `;
 
 // -----------------------모달 이미지 -------------------------
@@ -312,15 +317,19 @@ export const SubImage = styled.img`
 // ----------산책로 메인 이미지 ---------
 export const RATING_COUNT_DIV = styled.div`
   text-align: center;
-  height: 30vh;
-  width: 30vh;
+  /* height: 30vh;
+  width: 30vh; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 export const SUB_TEXT = styled.div`
   font-family: 'yg-jalnan';
   color: #49627a;
   margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 32px;
   font-weight: bold;
 `;
 export const MAIN_TEXT = styled.div`
@@ -369,6 +378,15 @@ export const MODAL_CONTENT = styled.div`
   }
 `;
 
+export const RATINGANDREVIEWWRAPPER = styled.div`
+  display: flex;
+  flex: row;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-bottom: 30px;
+`;
+
 // ---------------------카카오 지도 ---------------------
 export const MAP_BOX = styled.div`
   /* 배경 그라데이션 적용 */
@@ -383,10 +401,13 @@ export const MAP_BOX = styled.div`
 export const REVIEW_TEXT = styled.div`
   font-size: 16px;
   margin-bottom: 5px;
+  line-height: 24px;
 `;
 export const REVIEW_NAME = styled.div`
-  font-weight: bold;
+  font-family: 'yg-jalnan';
+  font-size: 18px;
   margin-bottom: 3px;
+  color: #49627a;
 `;
 export const REVIEW_DATE = styled.div`
   font-size: 12px;

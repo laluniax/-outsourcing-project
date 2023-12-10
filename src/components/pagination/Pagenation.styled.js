@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { colors } from 'styles/GlobalColors';
 
 export const CardBox = styled.div`
   margin: 12px 10px;
 `;
 
 export const PaginationWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
 `;
@@ -14,8 +15,11 @@ export const PaginationButton = styled.button`
   all: unset;
   margin: 0 5px;
   padding: 5px 10px;
+  border-radius: 99px;
   cursor: pointer;
-  background-color: ${(props) => (props.active ? 'gray' : 'white')};
+  color: ${(props) => (props.active ? 'white' : 'black')};
+  background-color: ${(props) => (props.active ? `${colors.mainColor}` : 'white')};
+  font-weight: 600;
 `;
 
 // 카드 리스트
