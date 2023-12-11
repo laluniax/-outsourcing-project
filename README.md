@@ -1,3 +1,9 @@
+# 실행법
+
+### `yarn start` 리액트 실행
+### `yarn server` 서버 실행
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
